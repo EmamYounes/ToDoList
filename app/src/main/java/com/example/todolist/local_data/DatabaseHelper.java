@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.example.todolist.to_do.model.ToDoModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -88,9 +87,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return model;
     }
 
-    public List<ToDoModel> getToDoList() {
+    public ArrayList<ToDoModel> getToDoList() {
 
-        List<ToDoModel> toDoModels = new ArrayList<>();
+        ArrayList<ToDoModel> toDoModels = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + SqlLightConstant.TABLE_NAME;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

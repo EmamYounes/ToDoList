@@ -51,4 +51,10 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
             cardDescription = itemView.findViewById(R.id.card_description);
         }
     }
+
+    public void updateList(ArrayList<ToDoModel> toDoModels) {
+        this.toDoModels= toDoModels;
+        notifyDataSetChanged();
+    }
+
 }
