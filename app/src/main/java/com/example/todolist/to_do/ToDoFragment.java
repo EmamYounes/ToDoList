@@ -77,6 +77,7 @@ public class ToDoFragment extends Fragment implements ToDoView {
         datePickerTimeline.deactivateDates(dates);
         toDoModels = new ArrayList<>();
         databaseHelper = MySingleton.getInstance().getDatabaseHelper();
+        setAdapterData();
         return view;
     }
 
@@ -85,7 +86,6 @@ public class ToDoFragment extends Fragment implements ToDoView {
             @Override
             public void onDateSelected(int year, int month, int day, int dayOfWeek) {
                 Log.d(TAG, "onDateSelected: " + day);
-                setAdapterData();
                 addNoteBtn.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
                 emptyTextContainer.setVisibility(View.GONE);

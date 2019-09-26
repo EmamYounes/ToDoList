@@ -86,7 +86,7 @@ public class DateFormat {
     }
 
     public int getCurrentMonth() {
-        return currentMonth-1;
+        return currentMonth;
     }
 
     public int getCurrentDay() {
