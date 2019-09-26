@@ -9,17 +9,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todolist.R;
-import com.example.todolist.to_do.model.ToDoListModel;
+import com.example.todolist.to_do.model.ToDoModel;
 
 import java.util.ArrayList;
 
 public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHolder> {
 
 
-    ArrayList<ToDoListModel> toDoListModels;
+    ArrayList<ToDoModel> toDoModels;
 
-    public ToDoListAdapter(ArrayList<ToDoListModel> toDoListModels) {
-        this.toDoListModels = toDoListModels;
+    public ToDoListAdapter(ArrayList<ToDoModel> toDoModels) {
+        this.toDoModels = toDoModels;
     }
 
     @NonNull
@@ -32,13 +32,13 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.cardTitle.setText(toDoListModels.get(position).getCardTitle());
-        holder.cardDescription.setText(toDoListModels.get(position).getCardDescription());
+        holder.cardTitle.setText(toDoModels.get(position).getCardTitle());
+        holder.cardDescription.setText(toDoModels.get(position).getCardDescription());
     }
 
     @Override
     public int getItemCount() {
-        return toDoListModels.size();
+        return toDoModels.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todolist.R;
 import com.example.todolist.to_do.adapter.ToDoListAdapter;
-import com.example.todolist.to_do.model.ToDoListModel;
+import com.example.todolist.to_do.model.ToDoModel;
 import com.vivekkaushik.datepicker.DatePickerTimeline;
 import com.vivekkaushik.datepicker.OnDateSelectedListener;
 
@@ -68,10 +68,12 @@ public class ToDoFragment extends Fragment implements ToDoView {
     }
 
     private void setAdapterData() {
-        ToDoListModel toDoListModel = new ToDoListModel("title", "Deaskhdvfhasdig;aosigoaoks");
-        ArrayList<ToDoListModel> toDoListModels = new ArrayList<>();
-        toDoListModels.add(toDoListModel);
-        ToDoListAdapter adapter = new ToDoListAdapter(toDoListModels);
+        ToDoModel toDoModel = new ToDoModel();
+        toDoModel.setCardTitle("Title");
+        toDoModel.setCardDescription("ajksfdas.bvfkasvfkasv.fas;lfhlasjfgas;lajksfdas.bvfkasvfkasv.fas;lfhlasjfgas;lajksfdas.bvfkasvfkasv.fas;lfhlasjfgas;lajksfdas.bvfkasvfkasv.fas;lfhlasjfgas;l");
+        ArrayList<ToDoModel> toDoModels = new ArrayList<>();
+        toDoModels.add(toDoModel);
+        ToDoListAdapter adapter = new ToDoListAdapter(toDoModels);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
     }
