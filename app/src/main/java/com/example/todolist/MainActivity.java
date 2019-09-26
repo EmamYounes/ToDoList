@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.todolist.local_data.DatabaseHelper;
+import com.example.todolist.old_task.OldTaskFragment;
 import com.example.todolist.to_do.ToDoFragment;
 import com.google.android.material.navigation.NavigationView;
 
@@ -63,15 +64,13 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (id == R.id.nav_to_do) {
             fragmentTransaction.replace(R.id.frame_layout_id, new ToDoFragment());
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
+        } else if (id == R.id.nav_old_task) {
+            fragmentTransaction.replace(R.id.frame_layout_id, new OldTaskFragment());
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_tools) {

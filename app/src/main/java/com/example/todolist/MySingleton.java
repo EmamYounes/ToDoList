@@ -6,7 +6,7 @@ public class MySingleton {
 
 
     private static MySingleton instance;
-    DatabaseHelper databaseHelper;
+    private DatabaseHelper databaseHelper;
 
     private MySingleton() {
 
