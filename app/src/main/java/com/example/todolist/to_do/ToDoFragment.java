@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ import com.vivekkaushik.datepicker.OnDateSelectedListener;
 import java.util.ArrayList;
 import java.util.Date;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -38,11 +40,24 @@ public class ToDoFragment extends Fragment implements ToDoView {
 
     private static final String TAG = "ToDoFragment";
     private ToDoPresenter presenter;
-    private DatePickerTimeline datePickerTimeline;
-    private RecyclerView recyclerView;
     private ToDoListAdapter adapter;
     private ArrayList<ToDoModel> toDoModels;
-    DatabaseHelper databaseHelper;
+    private DatabaseHelper databaseHelper;
+    private AlertDialog alertDialog;
+
+
+    private String noteTitle = "";
+    private String noteDescription = "";
+
+
+    @BindView(R.id.datePickerTimeline)
+    DatePickerTimeline datePickerTimeline;
+    @BindView(R.id.recycler_view_id)
+    RecyclerView recyclerView;
+    @BindView(R.id.add_note_btn)
+    Button addNoteBtn;
+    @BindView(R.id.empty_text_container)
+    LinearLayout emptyTextContainer;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Nullable
@@ -54,8 +69,6 @@ public class ToDoFragment extends Fragment implements ToDoView {
         View view = inflater.inflate(R.layout.to_do_fragment,
                 container, false);
         ButterKnife.bind(this, view);
-        datePickerTimeline = view.findViewById(R.id.datePickerTimeline);
-        recyclerView = view.findViewById(R.id.recycler_view_id);
         presenter.onStart();
         onDateSelected();
         Date[] dates = {Calendar.getInstance().getTime()};
@@ -71,6 +84,9 @@ public class ToDoFragment extends Fragment implements ToDoView {
             public void onDateSelected(int year, int month, int day, int dayOfWeek) {
                 Log.d(TAG, "onDateSelected: " + day);
                 setAdapterData();
+                addNoteBtn.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
+                emptyTextContainer.setVisibility(View.GONE);
             }
 
             @Override
@@ -105,28 +121,55 @@ public class ToDoFragment extends Fragment implements ToDoView {
         descriptionBox.setHint("Description");
         layout.addView(descriptionBox);
 
-        alertDialog.setView(layout);
-        negativeButtonAction(alertDialog);
-        alertDialog.setPositiveButton(getString(R.string.add_note), (dialogInterface, i) -> {
-            String noteTitle = titleBox.getText().toString();
-            String noteDescription = descriptionBox.getText().toString();
-            if (noteDescription.isEmpty()) {
-                Toast.makeText(getContext(), getString(R.string.add_note_warning), Toast.LENGTH_LONG).show();
-            } else if (noteTitle.isEmpty()) {
-                Toast.makeText(getContext(), getString(R.string.add_note_title_warning), Toast.LENGTH_LONG).show();
-            } else {
-                ToDoModel toDoModel = new ToDoModel();
-                toDoModel.setCardTitle(noteTitle);
-                toDoModel.setCardDescription(noteDescription);
-                toDoModels.add(toDoModel);
-                databaseHelper.insertToDoColumn(toDoModel);
-                adapter.updateList(toDoModels);
+        addAlertDialog(alertDialog, layout, titleBox, descriptionBox);
 
-            }
+    }
+
+    private void addAlertDialog(AlertDialog.Builder builder, LinearLayout layout, EditText titleBox, EditText descriptionBox) {
+        builder.setView(layout);
+        builder.setPositiveButton(getString(R.string.add_note), null);
+        alertDialog = builder.show();
+        negativeButtonAction(builder);
+        positiveButtonAction(alertDialog, titleBox, descriptionBox);
+    }
+
+    private void positiveButtonAction(AlertDialog alertDialog, EditText titleBox, EditText descriptionBox) {
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            noteTitle = titleBox.getText().toString();
+            noteDescription = descriptionBox.getText().toString();
+            presenter.handlePostiveButtonAction();
+
         });
-        alertDialog.create();
-        alertDialog.show();
+    }
 
+    @Override
+    public void dismissAlertDialog() {
+        alertDialog.dismiss();
+    }
+
+    @Override
+    public String getNoteTitle() {
+        return noteTitle;
+    }
+
+    @Override
+    public String getNoteDescription() {
+        return noteDescription;
+    }
+
+    @Override
+    public void makeToastMessage(int stringRes) {
+        Toast.makeText(getContext(), getString(stringRes), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void addNoteToList(String noteTitle, String noteDescription) {
+        ToDoModel toDoModel = new ToDoModel();
+        toDoModel.setCardTitle(noteTitle);
+        toDoModel.setCardDescription(noteDescription);
+        toDoModels.add(toDoModel);
+        databaseHelper.insertToDoColumn(toDoModel);
+        adapter.updateList(toDoModels);
     }
 
     private void negativeButtonAction(AlertDialog.Builder alertDialog) {

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
     android:orientation="vertical">
 
     <com.vivekkaushik.datepicker.DatePickerTimeline
@@ -21,42 +23,49 @@
         app:layout_constraintTop_toTopOf="parent"
         app:monthTextColor="@color/colorPrimary" />
 
-    <LinearLayout
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_id"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone"
+        tools:visibility="visible">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-    </LinearLayout>
+    </androidx.recyclerview.widget.RecyclerView>
 
     <LinearLayout
+        android:id="@+id/empty_text_container"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1"
-        android:gravity="center|bottom"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:visibility="gone">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/add_note_btn"
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:fontFamily="sans-serif"
-            android:padding="8dp"
-            android:text="@string/add_note"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-            android:textColor="@color/white"
-            android:theme="@style/ThemeOverlay.AppCompat.DayNight"
-            app:backgroundTint="@color/grey"
-            app:cornerRadius="15dp" />
+            android:text="@string/empty_text"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
     </LinearLayout>
 
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/add_note_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:fontFamily="sans-serif"
+        android:padding="8dp"
+        android:text="@string/add_note"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        android:textColor="@color/white"
+        android:theme="@style/ThemeOverlay.AppCompat.DayNight"
+        android:visibility="gone"
+        app:backgroundTint="@color/grey"
+        app:cornerRadius="15dp"
+        tools:visibility="visible" />
 </LinearLayout>
