@@ -24,7 +24,7 @@ import com.example.todolist.MySingleton;
 import com.example.todolist.R;
 import com.example.todolist.local_data.DatabaseHelper;
 import com.example.todolist.to_do.adapter.ToDoListAdapter;
-import com.example.todolist.to_do.model.DateFormat;
+import com.example.todolist.DateFormat;
 import com.example.todolist.to_do.model.ToDoModel;
 import com.vivekkaushik.datepicker.DatePickerTimeline;
 import com.vivekkaushik.datepicker.OnDateSelectedListener;

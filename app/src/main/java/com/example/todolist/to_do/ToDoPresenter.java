@@ -1,5 +1,6 @@
 package com.example.todolist.to_do;
 
+import com.example.todolist.DateFormat;
 import com.example.todolist.R;
 
 public class ToDoPresenter {
@@ -11,21 +12,22 @@ public class ToDoPresenter {
     }
 
     void onStart() {
-        getView.setInitialDate(2019, 3, 21);
+        DateFormat dateFormat = new DateFormat();
+        getView.setInitialDate(dateFormat.getCurrentYear(), dateFormat.getCurrentMonth() , dateFormat.getCurrentDay());
     }
 
 
     void handlePostiveButtonAction() {
-            String noteTitle = getView.getNoteTitle();
-            String noteDescription = getView.getNoteDescription();
-            if (noteDescription.isEmpty()) {
-                getView.makeToastMessage(R.string.add_note_warning);
-            } else if (noteTitle.isEmpty()) {
-                getView.makeToastMessage(R.string.add_note_title_warning);
-            } else {
-                getView.addNoteToList(noteTitle, noteDescription);
-                getView.dismissAlertDialog();
-            }
+        String noteTitle = getView.getNoteTitle();
+        String noteDescription = getView.getNoteDescription();
+        if (noteDescription.isEmpty()) {
+            getView.makeToastMessage(R.string.add_note_warning);
+        } else if (noteTitle.isEmpty()) {
+            getView.makeToastMessage(R.string.add_note_title_warning);
+        } else {
+            getView.addNoteToList(noteTitle, noteDescription);
+            getView.dismissAlertDialog();
+        }
 
     }
 }
