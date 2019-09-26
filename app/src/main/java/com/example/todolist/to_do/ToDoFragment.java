@@ -128,8 +128,9 @@ public class ToDoFragment extends Fragment implements ToDoView {
     private void addAlertDialog(AlertDialog.Builder builder, LinearLayout layout, EditText titleBox, EditText descriptionBox) {
         builder.setView(layout);
         builder.setPositiveButton(getString(R.string.add_note), null);
+        builder.setNegativeButton(getString(R.string.cancel), null);
         alertDialog = builder.show();
-        negativeButtonAction(builder);
+        negativeButtonAction(alertDialog);
         positiveButtonAction(alertDialog, titleBox, descriptionBox);
     }
 
@@ -139,6 +140,12 @@ public class ToDoFragment extends Fragment implements ToDoView {
             noteDescription = descriptionBox.getText().toString();
             presenter.handlePostiveButtonAction();
 
+        });
+    }
+
+    private void negativeButtonAction(AlertDialog alertDialog) {
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(v -> {
+            alertDialog.dismiss();
         });
     }
 
@@ -170,10 +177,6 @@ public class ToDoFragment extends Fragment implements ToDoView {
         toDoModels.add(toDoModel);
         databaseHelper.insertToDoColumn(toDoModel);
         adapter.updateList(toDoModels);
-    }
-
-    private void negativeButtonAction(AlertDialog.Builder alertDialog) {
-        alertDialog.setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> dialogInterface.dismiss());
     }
 
     @Override
