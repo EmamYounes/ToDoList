@@ -35,7 +35,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void insertToDoColumn(ToDoModel toDoModel) {
 
+/*
         if (isMailAddBefore(toDoModel)) return;
+*/
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

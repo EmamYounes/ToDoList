@@ -4,7 +4,6 @@
     android:id="@+id/calendar_detail_time_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="6dp"
     card_view:cardCornerRadius="3dp"
     card_view:cardUseCompatPadding="true">
 
@@ -41,7 +40,6 @@
             android:padding="15dp"
             android:textSize="16sp"
             tools:text="Descrption" />
-
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
