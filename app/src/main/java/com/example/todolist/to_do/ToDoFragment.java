@@ -144,9 +144,7 @@ public class ToDoFragment extends Fragment implements ToDoView {
     }
 
     private void negativeButtonAction(AlertDialog alertDialog) {
-        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(v -> {
-            alertDialog.dismiss();
-        });
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(v -> alertDialog.dismiss());
     }
 
     @Override
