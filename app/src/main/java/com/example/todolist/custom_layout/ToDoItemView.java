@@ -67,11 +67,4 @@ public class ToDoItemView extends CardView {
         cardDescription.setText(description);
     }
 
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        // View is now detached, and about to be destroyed
-        bind.unbind();
-    }
 }
