@@ -12,6 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.todolist.local_data.DatabaseHelper;
 import com.example.todolist.to_do.ToDoFragment;
 import com.google.android.material.navigation.NavigationView;
 
@@ -32,6 +33,13 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        initLocalDataBase();
+    }
+
+    void initLocalDataBase() {
+        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+        MySingleton.getInstance().saveDatabaseHelper(databaseHelper);
     }
 
     @Override
