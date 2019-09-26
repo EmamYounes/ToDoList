@@ -24,6 +24,7 @@ import com.example.todolist.MySingleton;
 import com.example.todolist.R;
 import com.example.todolist.local_data.DatabaseHelper;
 import com.example.todolist.to_do.adapter.ToDoListAdapter;
+import com.example.todolist.to_do.model.DateFormat;
 import com.example.todolist.to_do.model.ToDoModel;
 import com.vivekkaushik.datepicker.DatePickerTimeline;
 import com.vivekkaushik.datepicker.OnDateSelectedListener;
@@ -44,6 +45,7 @@ public class ToDoFragment extends Fragment implements ToDoView {
     private ArrayList<ToDoModel> toDoModels;
     private DatabaseHelper databaseHelper;
     private AlertDialog alertDialog;
+    private DateFormat dateFormat;
 
 
     private String noteTitle = "";
@@ -87,6 +89,7 @@ public class ToDoFragment extends Fragment implements ToDoView {
                 addNoteBtn.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
                 emptyTextContainer.setVisibility(View.GONE);
+                dateFormat = new DateFormat(year, month, day);
             }
 
             @Override
@@ -172,6 +175,7 @@ public class ToDoFragment extends Fragment implements ToDoView {
         ToDoModel toDoModel = new ToDoModel();
         toDoModel.setCardTitle(noteTitle);
         toDoModel.setCardDescription(noteDescription);
+        toDoModel.setToDoDate(dateFormat.getDate());
         toDoModels.add(toDoModel);
         databaseHelper.insertToDoColumn(toDoModel);
         adapter.updateList(toDoModels);
