@@ -1,13 +1,16 @@
 package com.example.todolist.to_do;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -32,6 +35,7 @@ import com.vivekkaushik.datepicker.OnDateSelectedListener;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +51,7 @@ public class ToDoFragment extends Fragment implements ToDoView {
     private DatabaseHelper databaseHelper;
     private AlertDialog alertDialog;
     private DateFormat dateFormat;
+    Dialog settingsDialog;
 
 
     private String noteTitle = "";
@@ -81,6 +86,8 @@ public class ToDoFragment extends Fragment implements ToDoView {
         databaseHelper = MySingleton.getInstance().getDatabaseHelper();
         setAdapterData();
         handleItemAction();
+        settingsDialog = new Dialog(Objects.requireNonNull(getActivity()));
+        Objects.requireNonNull(settingsDialog.getWindow()).requestFeature(Window.FEATURE_NO_TITLE);
         return view;
     }
 
@@ -119,15 +126,17 @@ public class ToDoFragment extends Fragment implements ToDoView {
             toDoModel.setCardDescription(descriptionBox.getText().toString());
             databaseHelper.updateToDoModel(toDoModel);
             adapter.updateList(getListForDay(databaseHelper.getToDoList()));
+            successView();
             dialog.dismiss();
         });
     }
 
     private void handleDeleteAction(int position, AlertDialog dialog) {
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(v -> {
+            deleteView();
             databaseHelper.deleteToDoModel(databaseHelper.getToDoList().get(position));
             adapter.updateList(getListForDay(databaseHelper.getToDoList()));
-            presenter.handleEmptyCase(databaseHelper.getToDoList());
+            presenter.handleEmptyCase(getListForDay(databaseHelper.getToDoList()));
             dialog.dismiss();
         });
     }
@@ -144,7 +153,7 @@ public class ToDoFragment extends Fragment implements ToDoView {
                 dateFormat = new DateFormat(year, month, day);
                 adapter.updateList(getListForDay(databaseHelper.getToDoList()));
                 presenter.handleAddButtonVisibilty(dateFormat.getDate());
-                presenter.handleEmptyCase(databaseHelper.getToDoList());
+                presenter.handleEmptyCase(getListForDay(databaseHelper.getToDoList()));
             }
 
             @Override
@@ -155,7 +164,8 @@ public class ToDoFragment extends Fragment implements ToDoView {
         });
     }
 
-    private ArrayList<ToDoModel> getListForDay(ArrayList<ToDoModel> toDoModels) {
+    @Override
+    public ArrayList<ToDoModel> getListForDay(ArrayList<ToDoModel> toDoModels) {
         return (ArrayList<ToDoModel>) Observable.fromIterable(toDoModels).filter(item ->
                 item.getToDoDate().equalsIgnoreCase(dateFormat.getDate())).toList().blockingGet();
     }
@@ -237,6 +247,21 @@ public class ToDoFragment extends Fragment implements ToDoView {
         toDoModel.setToDoDate(dateFormat.getDate());
         databaseHelper.insertToDoColumn(toDoModel);
         adapter.updateList(getListForDay(databaseHelper.getToDoList()));
+        successView();
+    }
+
+    private void successView() {
+        settingsDialog.setContentView(getLayoutInflater().inflate(R.layout.success_image_layout
+                , null));
+        settingsDialog.show();
+        new Handler().postDelayed(() -> settingsDialog.dismiss(), 4500);
+    }
+
+    private void deleteView() {
+        settingsDialog.setContentView(getLayoutInflater().inflate(R.layout.error_image_layout
+                , null));
+        settingsDialog.show();
+        new Handler().postDelayed(() -> settingsDialog.dismiss(), 3750);
     }
 
     @Override

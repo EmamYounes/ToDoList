@@ -9,6 +9,8 @@ import com.example.todolist.to_do.model.ToDoModel;
 
 import java.util.ArrayList;
 
+import io.reactivex.Observable;
+
 public class ToDoPresenter {
 
     ToDoView getView;
@@ -41,7 +43,7 @@ public class ToDoPresenter {
             getView.makeToastMessage(R.string.add_note_title_warning);
         } else {
             getView.addNoteToList(noteTitle, noteDescription);
-            handleEmptyCase(MySingleton.getInstance().getDatabaseHelper().getToDoList());
+            handleEmptyCase(getView.getListForDay(MySingleton.getInstance().getDatabaseHelper().getToDoList()));
             getView.dismissAlertDialog();
         }
     }
