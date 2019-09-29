@@ -20,11 +20,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.todolist.DateFormat;
 import com.example.todolist.MySingleton;
 import com.example.todolist.R;
 import com.example.todolist.local_data.DatabaseHelper;
 import com.example.todolist.to_do.adapter.ToDoListAdapter;
-import com.example.todolist.DateFormat;
 import com.example.todolist.to_do.model.ToDoModel;
 import com.vivekkaushik.datepicker.DatePickerTimeline;
 import com.vivekkaushik.datepicker.OnDateSelectedListener;
@@ -78,7 +78,56 @@ public class ToDoFragment extends Fragment implements ToDoView {
         toDoModels = new ArrayList<>();
         databaseHelper = MySingleton.getInstance().getDatabaseHelper();
         setAdapterData();
+        handleItemAction();
+
         return view;
+    }
+
+    private void handleItemAction() {
+        adapter.setClickListener(view1 -> {
+
+
+            int position = recyclerView.indexOfChild(view1);
+            ToDoModel toDoModel = toDoModels.get(position);
+
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+            alertDialog.setTitle(getString(R.string.update));
+            alertDialog.setIcon(R.drawable.ic_update);
+            LinearLayout layout = new LinearLayout(getContext());
+            layout.setOrientation(LinearLayout.VERTICAL);
+
+            final EditText titleBox = new EditText(getContext());
+            titleBox.setText(toDoModel.getCardTitle());
+            layout.addView(titleBox);
+
+            final EditText descriptionBox = new EditText(getContext());
+            descriptionBox.setText(toDoModel.getCardDescription());
+            layout.addView(descriptionBox);
+            alertDialog.setView(layout);
+            alertDialog.setPositiveButton(getString(R.string.update), null);
+            alertDialog.setNegativeButton(getString(R.string.delete), null);
+            AlertDialog dialog = alertDialog.show();
+            handleUpdateAction(position, dialog);
+            handleDeleteAction(toDoModel, titleBox, descriptionBox, dialog);
+        });
+    }
+
+    private void handleDeleteAction(ToDoModel toDoModel, EditText titleBox, EditText descriptionBox, AlertDialog dialog) {
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            toDoModel.setCardTitle(titleBox.getText().toString());
+            toDoModel.setCardDescription(descriptionBox.getText().toString());
+            databaseHelper.updateToDoModel(toDoModel);
+            adapter.updateList(databaseHelper.getToDoList());
+            dialog.dismiss();
+        });
+    }
+
+    private void handleUpdateAction(int position, AlertDialog dialog) {
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(v -> {
+            databaseHelper.deleteToDoModel(toDoModels.get(position));
+            adapter.updateList(databaseHelper.getToDoList());
+            dialog.dismiss();
+        });
     }
 
     private void onDateSelected() {

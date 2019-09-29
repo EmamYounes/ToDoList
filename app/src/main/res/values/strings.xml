@@ -19,4 +19,6 @@
     <string name="add_note_warning">Please add your note description</string>
     <string name="add_note_title_warning">Please add your note title</string>
     <string name="empty_text">Please Select Date</string>
+    <string name="update">Update Note</string>
+    <string name="delete">Delete Note</string>
 </resources>

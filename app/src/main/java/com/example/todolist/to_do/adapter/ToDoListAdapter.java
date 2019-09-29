@@ -17,6 +17,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
 
 
     private ArrayList<ToDoModel> toDoModels;
+    private View.OnClickListener mClickListener;
 
     public ToDoListAdapter(ArrayList<ToDoModel> toDoModels) {
         this.toDoModels = toDoModels;
@@ -26,7 +27,9 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.to_do_item, parent, false);
-        return new ViewHolder(view);
+        ViewHolder holder = new ViewHolder(view);
+        holder.itemView.setOnClickListener(view1 -> mClickListener.onClick(view1));
+        return holder;
     }
 
     @Override
@@ -55,4 +58,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
         notifyDataSetChanged();
     }
 
+    public void setClickListener(View.OnClickListener callback) {
+        mClickListener = callback;
+    }
 }
