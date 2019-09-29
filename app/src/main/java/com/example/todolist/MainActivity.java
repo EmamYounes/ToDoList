@@ -3,6 +3,9 @@ package com.example.todolist;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,10 +19,19 @@ import com.example.todolist.active_task.ActiveTaskFragment;
 import com.example.todolist.local_data.DatabaseHelper;
 import com.example.todolist.old_task.OldTaskFragment;
 import com.example.todolist.to_do.ToDoFragment;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+
+    public static final String GOOGLE_ACCOUNT = "GOOGLE_ACCOUNT";
+
+    ImageView profileImage;
+    TextView profileName;
+    TextView profileEmail;
 
 
     @Override
@@ -30,14 +42,19 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        View header = navigationView.getHeaderView(0);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        profileImage = header.findViewById(R.id.profile_image);
+        profileName = header.findViewById(R.id.profile_title);
+        profileEmail = header.findViewById(R.id.profile_mail);
         navigationView.setNavigationItemSelectedListener(this);
         initLocalDataBase();
         navigationView.getMenu().getItem(0).setChecked(true);
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
+        setDataOnView();
     }
 
     void initLocalDataBase() {
@@ -86,5 +103,14 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void setDataOnView() {
+        GoogleSignInAccount googleSignInAccount = getIntent().getParcelableExtra(GOOGLE_ACCOUNT);
+        assert googleSignInAccount != null;
+        Picasso.get().load(googleSignInAccount.getPhotoUrl()).error(R.drawable.ic_gmail)
+                .centerInside().fit().into(profileImage);
+        profileName.setText(googleSignInAccount.getDisplayName());
+        profileEmail.setText(googleSignInAccount.getEmail());
     }
 }

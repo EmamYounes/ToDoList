@@ -7,8 +7,8 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.example.todolist.MainActivity;
 import com.example.todolist.R;
+import com.example.todolist.login_screen.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -26,7 +26,7 @@ public class SplashActivity extends AppCompatActivity {
         }
         lottieAnimationView = findViewById(R.id.animation_view);
         new Handler().postDelayed(() -> {
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         }, SPLASH_DISPLAY_LENGTH);
