@@ -35,8 +35,9 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-
         initLocalDataBase();
+        navigationView.getMenu().getItem(0).setChecked(true);
+        onNavigationItemSelected(navigationView.getMenu().getItem(0));
     }
 
     void initLocalDataBase() {
