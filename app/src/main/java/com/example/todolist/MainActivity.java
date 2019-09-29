@@ -1,5 +1,6 @@
 package com.example.todolist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,9 +18,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.todolist.active_task.ActiveTaskFragment;
 import com.example.todolist.local_data.DatabaseHelper;
+import com.example.todolist.login_screen.LoginActivity;
 import com.example.todolist.old_task.OldTaskFragment;
 import com.example.todolist.to_do.ToDoFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
 
@@ -92,17 +95,23 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.frame_layout_id, new OldTaskFragment());
         } else if (id == R.id.nav_active_task) {
             fragmentTransaction.replace(R.id.frame_layout_id, new ActiveTaskFragment());
-        } else if (id == R.id.nav_tools) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.sign_out) {
+            signOut();
         }
         fragmentTransaction.commit();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void signOut() {
+        GoogleSignInClient googleSignInClient = MySingleton.getInstance().getGoogleSignInClient();
+        googleSignInClient.signOut().addOnCompleteListener(task -> {
+            //On Succesfull signout we navigate the user back to LoginActivity
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        });
     }
 
     private void setDataOnView() {
@@ -113,4 +122,5 @@ public class MainActivity extends AppCompatActivity
         profileName.setText(googleSignInAccount.getDisplayName());
         profileEmail.setText(googleSignInAccount.getEmail());
     }
+
 }

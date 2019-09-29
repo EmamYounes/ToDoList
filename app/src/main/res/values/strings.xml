@@ -27,4 +27,6 @@
     <string name="empty_text_active_fragment">There is no active tasks to display</string>
     <string name="succeded_add">Added Successfully</string>
     <string name="succeded_update">update Successfully</string>
+    <string name="logout_title">Log Out</string>
+    <string name="sign_out_title">Sign Out</string>
 </resources>

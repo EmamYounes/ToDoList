@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.todolist.MainActivity;
+import com.example.todolist.MySingleton;
 import com.example.todolist.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -29,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.sign_in_button)
     SignInButton googleSignInButton;
+    @BindView(R.id.progress_bar)
+    ProgressBar loadingIndicator;
 
     private GoogleSignInClient googleSignInClient;
 
@@ -42,8 +47,10 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
 
         googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
+        MySingleton.getInstance().saveGoogleSignInClient(googleSignInClient);
 
         googleSignInButton.setOnClickListener(view -> {
+            loadingIndicator.setVisibility(View.VISIBLE);
             Intent signInIntent = googleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, 101);
         });
@@ -67,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     break;
             }
+        loadingIndicator.setVisibility(View.GONE);
     }
 
     @Override
