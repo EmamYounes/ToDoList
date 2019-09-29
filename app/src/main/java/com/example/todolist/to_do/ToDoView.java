@@ -17,4 +17,6 @@ public interface ToDoView {
     void showEmptyCase();
 
     void hideEmptyCase();
+
+    void setVisibilityAddButton(int visibility);
 }

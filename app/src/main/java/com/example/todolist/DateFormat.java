@@ -79,7 +79,7 @@ public class DateFormat {
         int selectedDay = Integer.parseInt(splitedDate[0]);
         if (selectedYear <= currentYear) {
             if (selectedMonth <= currentMonth) {
-                if (selectedDay <= currentDay) {
+                if (selectedDay < currentDay) {
                     return true;
                 }
             }

@@ -142,6 +142,7 @@ public class ToDoFragment extends Fragment implements ToDoView {
                 emptyText.setText(R.string.empty_text);
                 dateFormat = new DateFormat(year, month, day);
                 adapter.updateList(getListForDay(databaseHelper.getToDoList()));
+                presenter.handleAddButtonVisibilty(dateFormat.getDate());
             }
 
             @Override
@@ -252,6 +253,11 @@ public class ToDoFragment extends Fragment implements ToDoView {
     public void hideEmptyCase() {
         emptyTextContainer.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setVisibilityAddButton(int visibility) {
+        addNoteBtn.setVisibility(visibility);
     }
 
 }
