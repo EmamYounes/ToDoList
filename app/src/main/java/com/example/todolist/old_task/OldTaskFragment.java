@@ -40,7 +40,6 @@ public class OldTaskFragment extends Fragment implements OldTaskView {
         presenter = new OldTaskPresenter(this);
         View view = inflater.inflate(R.layout.old_task_fragment, container, false);
         ButterKnife.bind(this, view);
-        emptyText.setText(R.string.empty_text_old_fragment);
         presenter.onStart();
         return view;
     }

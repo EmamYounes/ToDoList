@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +29,10 @@ public class ActiveTaskFragment extends Fragment implements ActiveTaskView {
 
     @BindView(R.id.recycler_view_id)
     RecyclerView recyclerView;
+    @BindView(R.id.empty_text_container)
+    LinearLayout emptyTextContainer;
+    @BindView(R.id.empty_text)
+    TextView emptyText;
 
     @Nullable
     @Override
@@ -44,4 +50,18 @@ public class ActiveTaskFragment extends Fragment implements ActiveTaskView {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
     }
+
+    @Override
+    public void showEmptyCase() {
+        emptyTextContainer.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        emptyText.setText(R.string.empty_text_active_fragment);
+    }
+
+    @Override
+    public void hideEmptyCase() {
+        emptyTextContainer.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+    }
+
 }
