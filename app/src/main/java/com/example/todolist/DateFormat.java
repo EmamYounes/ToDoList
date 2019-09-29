@@ -1,23 +1,27 @@
 package com.example.todolist;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class DateFormat {
 
-    private static DateFormat dateFormat;
     private int year = 0;
     private int month = 0;
     private int day = 0;
-    String formattedDate = "";
+    private String formattedDate = "";
 
-    String[] formattedDateSplit;
-    int currentYear = 0;
-    int currentMonth = 0;
-    int currentDay = 0;
+    private String[] formattedDateSplit;
+    private int currentYear = 0;
+    private int currentMonth = 0;
+    private int currentDay = 0;
+
+    private Date currentTime;
+    SimpleDateFormat dateFormat;
 
     public DateFormat() {
         initCurrentDate();
@@ -59,11 +63,10 @@ public class DateFormat {
     }
 
     private void initCurrentDate() {
-        Date currentTime = Calendar.getInstance().getTime();
+        currentTime = Calendar.getInstance().getTime();
         Log.d("Current time => ", "" + currentTime);
-
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        formattedDate = df.format(currentTime);
+        dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        formattedDate = dateFormat.format(currentTime);
         formattedDateSplit = formattedDate.split("/");
         currentYear = Integer.parseInt(formattedDateSplit[2]);
         currentMonth = Integer.parseInt(formattedDateSplit[1]);
@@ -72,20 +75,17 @@ public class DateFormat {
     }
 
     public boolean isOldDate(String date) {
-        if (date.isEmpty() || !date.contains("/")) return false;
-        String[] splitedDate = date.split("/");
-        int selectedYear = Integer.parseInt(splitedDate[2]);
-        int selectedMonth = Integer.parseInt(splitedDate[1]);
-        int selectedDay = Integer.parseInt(splitedDate[0]);
-        if (selectedYear <= currentYear) {
-            if (selectedMonth <= currentMonth) {
-                if (selectedDay < currentDay) {
-                    return true;
-                }
-            }
-
+        try {
+            @SuppressLint("SimpleDateFormat")
+            Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(date);
+            assert date1 != null;
+            return date1.before(currentTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            Log.d("isOldDate method", e.toString());
+            return false;
         }
-        return false;
+
     }
 
     public int getCurrentYear() {

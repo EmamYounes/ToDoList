@@ -9,8 +9,6 @@ import com.example.todolist.to_do.model.ToDoModel;
 
 import java.util.ArrayList;
 
-import io.reactivex.Observable;
-
 public class ToDoPresenter {
 
     ToDoView getView;
