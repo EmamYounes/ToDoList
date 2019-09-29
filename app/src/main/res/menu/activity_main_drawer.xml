@@ -6,15 +6,15 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_to_do"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_to_do"
             android:title="@string/menu_to_do" />
         <item
             android:id="@+id/nav_old_task"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_to_do_list"
             android:title="@string/menu_old_task" />
         <item
             android:id="@+id/nav_active_task"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_daily_tasks"
             android:title="@string/menu_active_task" />
     </group>
 
@@ -22,7 +22,7 @@
         <menu>
             <item
                 android:id="@+id/sign_out"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/ic_logout"
                 android:title="@string/sign_out_title" />
         </menu>
     </item>
