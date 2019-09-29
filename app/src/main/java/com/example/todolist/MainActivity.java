@@ -12,6 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.todolist.active_task.ActiveTaskFragment;
 import com.example.todolist.local_data.DatabaseHelper;
 import com.example.todolist.old_task.OldTaskFragment;
 import com.example.todolist.to_do.ToDoFragment;
@@ -71,8 +72,8 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.frame_layout_id, new ToDoFragment());
         } else if (id == R.id.nav_old_task) {
             fragmentTransaction.replace(R.id.frame_layout_id, new OldTaskFragment());
-        } else if (id == R.id.nav_slideshow) {
-
+        } else if (id == R.id.nav_active_task) {
+            fragmentTransaction.replace(R.id.frame_layout_id, new ActiveTaskFragment());
         } else if (id == R.id.nav_tools) {
 
         } else if (id == R.id.nav_share) {

@@ -1,4 +1,4 @@
-package com.example.todolist.old_task.adapter;
+package com.example.todolist.active_task.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +13,13 @@ import com.example.todolist.to_do.model.ToDoModel;
 
 import java.util.ArrayList;
 
-public class OldTaskListAdapter extends RecyclerView.Adapter<OldTaskListAdapter.ViewHolder> {
+
+public class ActiveTaskAdapter extends RecyclerView.Adapter<ActiveTaskAdapter.ViewHolder> {
 
 
     private ArrayList<ToDoModel> oldTaskList;
 
-    public OldTaskListAdapter(ArrayList<ToDoModel> oldTaskList) {
+    public ActiveTaskAdapter(ArrayList<ToDoModel> oldTaskList) {
         this.oldTaskList = oldTaskList;
     }
 
@@ -26,7 +27,8 @@ public class OldTaskListAdapter extends RecyclerView.Adapter<OldTaskListAdapter.
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.old_task_item, parent, false);
-        return new ViewHolder(view);
+        ViewHolder viewHolder = new ViewHolder(view);
+        return viewHolder;
     }
 
     @Override

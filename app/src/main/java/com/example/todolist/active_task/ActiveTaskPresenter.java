@@ -1,4 +1,4 @@
-package com.example.todolist.old_task;
+package com.example.todolist.active_task;
 
 import com.example.todolist.DateFormat;
 import com.example.todolist.MySingleton;
@@ -9,16 +9,16 @@ import java.util.ArrayList;
 
 import io.reactivex.Observable;
 
-class OldTaskPresenter {
+public class ActiveTaskPresenter {
 
-    private OldTaskView getView;
+    private ActiveTaskView getView;
 
     private DatabaseHelper databaseHelper;
     private ArrayList<ToDoModel> toDoList;
     private DateFormat dateFormat;
 
 
-    OldTaskPresenter(OldTaskView getView) {
+    ActiveTaskPresenter(ActiveTaskView getView) {
         this.getView = getView;
     }
 
@@ -32,6 +32,6 @@ class OldTaskPresenter {
 
     private ArrayList<ToDoModel> getListForDay(ArrayList<ToDoModel> toDoModels) {
         return (ArrayList<ToDoModel>) Observable.fromIterable(toDoModels).filter(item ->
-                dateFormat.isOldDate(item.getToDoDate())).toList().blockingGet();
+                !dateFormat.isOldDate(item.getToDoDate())).toList().blockingGet();
     }
 }

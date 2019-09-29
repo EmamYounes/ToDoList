@@ -9,6 +9,7 @@
 
     <string name="menu_to_do">To Do</string>
     <string name="menu_old_task">Old Tasks</string>
+    <string name="menu_active_task">Active Tasks</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="menu_tools">Tools</string>

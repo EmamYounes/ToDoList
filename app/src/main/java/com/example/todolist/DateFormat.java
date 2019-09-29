@@ -71,12 +71,19 @@ public class DateFormat {
         Log.d("formatted Date => ", "" + formattedDate);
     }
 
-    public boolean isFutureDate() {
-        if (formattedDate.isEmpty() || !formattedDate.contains("/")) return false;
-        try {
-            if (getYear() >= currentYear || getMonth() >= currentMonth || getDay() >= currentDay)
-                return true;
-        } catch (Exception e) {
+    public boolean isOldDate(String date) {
+        if (date.isEmpty() || !date.contains("/")) return false;
+        String[] splitedDate = date.split("/");
+        int selectedYear = Integer.parseInt(splitedDate[2]);
+        int selectedMonth = Integer.parseInt(splitedDate[1]);
+        int selectedDay = Integer.parseInt(splitedDate[0]);
+        if (selectedYear <= currentYear) {
+            if (selectedMonth <= currentMonth) {
+                if (selectedDay <= currentDay) {
+                    return true;
+                }
+            }
+
         }
         return false;
     }
