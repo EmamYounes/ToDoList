@@ -13,4 +13,8 @@ public interface ToDoView {
     void addNoteToList(String noteTitle, String noteDescription);
 
     void dismissAlertDialog();
+
+    void showEmptyCase();
+
+    void hideEmptyCase();
 }

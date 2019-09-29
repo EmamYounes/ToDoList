@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -60,6 +61,8 @@ public class ToDoFragment extends Fragment implements ToDoView {
     Button addNoteBtn;
     @BindView(R.id.empty_text_container)
     LinearLayout emptyTextContainer;
+    @BindView(R.id.empty_text)
+    TextView emptyText;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Nullable
@@ -79,13 +82,12 @@ public class ToDoFragment extends Fragment implements ToDoView {
         databaseHelper = MySingleton.getInstance().getDatabaseHelper();
         setAdapterData();
         handleItemAction();
-
         return view;
     }
 
     private void handleItemAction() {
-        adapter.setClickListener(view1 -> {
 
+        adapter.setClickListener(view1 -> {
 
             int position = recyclerView.indexOfChild(view1);
             ToDoModel toDoModel = toDoModels.get(position);
@@ -138,6 +140,7 @@ public class ToDoFragment extends Fragment implements ToDoView {
                 addNoteBtn.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
                 emptyTextContainer.setVisibility(View.GONE);
+                emptyText.setText(R.string.empty_text);
                 dateFormat = new DateFormat(year, month, day);
             }
 
@@ -234,4 +237,18 @@ public class ToDoFragment extends Fragment implements ToDoView {
     public void setInitialDate(int year, int month, int date) {
         datePickerTimeline.setInitialDate(year, month, date);
     }
+
+    @Override
+    public void showEmptyCase() {
+        emptyTextContainer.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        emptyText.setText(R.string.empty_add_text);
+    }
+
+    @Override
+    public void hideEmptyCase() {
+        emptyTextContainer.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+    }
+
 }

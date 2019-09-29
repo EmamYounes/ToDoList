@@ -1,6 +1,7 @@
 package com.example.todolist.to_do;
 
 import com.example.todolist.DateFormat;
+import com.example.todolist.MySingleton;
 import com.example.todolist.R;
 
 public class ToDoPresenter {
@@ -13,7 +14,7 @@ public class ToDoPresenter {
 
     void onStart() {
         DateFormat dateFormat = new DateFormat();
-        getView.setInitialDate(dateFormat.getCurrentYear(), dateFormat.getCurrentMonth() , dateFormat.getCurrentDay());
+        getView.setInitialDate(dateFormat.getCurrentYear(), dateFormat.getCurrentMonth(), dateFormat.getCurrentDay());
     }
 
 
@@ -28,6 +29,13 @@ public class ToDoPresenter {
             getView.addNoteToList(noteTitle, noteDescription);
             getView.dismissAlertDialog();
         }
+    }
 
+    void handleEmptyCase() {
+        if (MySingleton.getInstance().getDatabaseHelper().getToDoList().isEmpty()) {
+            getView.showEmptyCase();
+        } else {
+            getView.hideEmptyCase();
+        }
     }
 }
