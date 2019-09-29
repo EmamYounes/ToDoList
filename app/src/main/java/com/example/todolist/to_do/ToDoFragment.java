@@ -36,6 +36,7 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Observable;
 
 public class ToDoFragment extends Fragment implements ToDoView {
 
@@ -43,7 +44,6 @@ public class ToDoFragment extends Fragment implements ToDoView {
     private static final String TAG = "ToDoFragment";
     private ToDoPresenter presenter;
     private ToDoListAdapter adapter;
-    private ArrayList<ToDoModel> toDoModels;
     private DatabaseHelper databaseHelper;
     private AlertDialog alertDialog;
     private DateFormat dateFormat;
@@ -78,7 +78,6 @@ public class ToDoFragment extends Fragment implements ToDoView {
         onDateSelected();
         Date[] dates = {Calendar.getInstance().getTime()};
         datePickerTimeline.deactivateDates(dates);
-        toDoModels = new ArrayList<>();
         databaseHelper = MySingleton.getInstance().getDatabaseHelper();
         setAdapterData();
         handleItemAction();
@@ -90,7 +89,7 @@ public class ToDoFragment extends Fragment implements ToDoView {
         adapter.setClickListener(view1 -> {
 
             int position = recyclerView.indexOfChild(view1);
-            ToDoModel toDoModel = toDoModels.get(position);
+            ToDoModel toDoModel = getListForDay(databaseHelper.getToDoList()).get(position);
 
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
             alertDialog.setTitle(getString(R.string.update));
@@ -109,25 +108,25 @@ public class ToDoFragment extends Fragment implements ToDoView {
             alertDialog.setPositiveButton(getString(R.string.update), null);
             alertDialog.setNegativeButton(getString(R.string.delete), null);
             AlertDialog dialog = alertDialog.show();
-            handleUpdateAction(position, dialog);
-            handleDeleteAction(toDoModel, titleBox, descriptionBox, dialog);
+            handleDeleteAction(position, dialog);
+            handleUpdateAction(toDoModel, titleBox, descriptionBox, dialog);
         });
     }
 
-    private void handleDeleteAction(ToDoModel toDoModel, EditText titleBox, EditText descriptionBox, AlertDialog dialog) {
+    private void handleUpdateAction(ToDoModel toDoModel, EditText titleBox, EditText descriptionBox, AlertDialog dialog) {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
             toDoModel.setCardTitle(titleBox.getText().toString());
             toDoModel.setCardDescription(descriptionBox.getText().toString());
             databaseHelper.updateToDoModel(toDoModel);
-            adapter.updateList(databaseHelper.getToDoList());
+            adapter.updateList(getListForDay(databaseHelper.getToDoList()));
             dialog.dismiss();
         });
     }
 
-    private void handleUpdateAction(int position, AlertDialog dialog) {
+    private void handleDeleteAction(int position, AlertDialog dialog) {
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(v -> {
-            databaseHelper.deleteToDoModel(toDoModels.get(position));
-            adapter.updateList(databaseHelper.getToDoList());
+            databaseHelper.deleteToDoModel(databaseHelper.getToDoList().get(position));
+            adapter.updateList(getListForDay(databaseHelper.getToDoList()));
             dialog.dismiss();
         });
     }
@@ -142,6 +141,7 @@ public class ToDoFragment extends Fragment implements ToDoView {
                 emptyTextContainer.setVisibility(View.GONE);
                 emptyText.setText(R.string.empty_text);
                 dateFormat = new DateFormat(year, month, day);
+                adapter.updateList(getListForDay(databaseHelper.getToDoList()));
             }
 
             @Override
@@ -152,9 +152,13 @@ public class ToDoFragment extends Fragment implements ToDoView {
         });
     }
 
+    private ArrayList<ToDoModel> getListForDay(ArrayList<ToDoModel> toDoModels) {
+        return (ArrayList<ToDoModel>) Observable.fromIterable(toDoModels).filter(item ->
+                item.getToDoDate().equalsIgnoreCase(dateFormat.getDate())).toList().blockingGet();
+    }
+
     private void setAdapterData() {
-        toDoModels = databaseHelper.getToDoList();
-        adapter = new ToDoListAdapter(toDoModels);
+        adapter = new ToDoListAdapter(databaseHelper.getToDoList());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
     }
@@ -228,9 +232,8 @@ public class ToDoFragment extends Fragment implements ToDoView {
         toDoModel.setCardTitle(noteTitle);
         toDoModel.setCardDescription(noteDescription);
         toDoModel.setToDoDate(dateFormat.getDate());
-        toDoModels.add(toDoModel);
         databaseHelper.insertToDoColumn(toDoModel);
-        adapter.updateList(toDoModels);
+        adapter.updateList(getListForDay(databaseHelper.getToDoList()));
     }
 
     @Override
