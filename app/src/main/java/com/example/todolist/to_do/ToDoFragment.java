@@ -127,6 +127,7 @@ public class ToDoFragment extends Fragment implements ToDoView {
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(v -> {
             databaseHelper.deleteToDoModel(databaseHelper.getToDoList().get(position));
             adapter.updateList(getListForDay(databaseHelper.getToDoList()));
+            presenter.handleEmptyCase(databaseHelper.getToDoList());
             dialog.dismiss();
         });
     }
@@ -143,6 +144,7 @@ public class ToDoFragment extends Fragment implements ToDoView {
                 dateFormat = new DateFormat(year, month, day);
                 adapter.updateList(getListForDay(databaseHelper.getToDoList()));
                 presenter.handleAddButtonVisibilty(dateFormat.getDate());
+                presenter.handleEmptyCase(databaseHelper.getToDoList());
             }
 
             @Override

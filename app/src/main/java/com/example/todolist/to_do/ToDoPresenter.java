@@ -5,6 +5,9 @@ import android.view.View;
 import com.example.todolist.DateFormat;
 import com.example.todolist.MySingleton;
 import com.example.todolist.R;
+import com.example.todolist.to_do.model.ToDoModel;
+
+import java.util.ArrayList;
 
 public class ToDoPresenter {
 
@@ -38,12 +41,13 @@ public class ToDoPresenter {
             getView.makeToastMessage(R.string.add_note_title_warning);
         } else {
             getView.addNoteToList(noteTitle, noteDescription);
+            handleEmptyCase(MySingleton.getInstance().getDatabaseHelper().getToDoList());
             getView.dismissAlertDialog();
         }
     }
 
-    void handleEmptyCase() {
-        if (MySingleton.getInstance().getDatabaseHelper().getToDoList().isEmpty()) {
+    void handleEmptyCase(ArrayList<ToDoModel> toDoModels) {
+        if (toDoModels.isEmpty()) {
             getView.showEmptyCase();
         } else {
             getView.hideEmptyCase();
