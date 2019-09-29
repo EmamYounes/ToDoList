@@ -39,4 +39,5 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.2.0'
     implementation 'com.github.EmamYounes:DatePickerTimeline:1.0.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
+    implementation "com.airbnb.android:lottie:3.0.7"
 }
