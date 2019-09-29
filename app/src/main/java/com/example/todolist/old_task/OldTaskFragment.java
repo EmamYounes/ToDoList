@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +29,10 @@ public class OldTaskFragment extends Fragment implements OldTaskView {
 
     @BindView(R.id.recycler_view_id)
     RecyclerView recyclerView;
+    @BindView(R.id.empty_text_container)
+    LinearLayout emptyTextContainer;
+    @BindView(R.id.empty_text)
+    TextView emptyText;
 
     @Nullable
     @Override
@@ -34,6 +40,7 @@ public class OldTaskFragment extends Fragment implements OldTaskView {
         presenter = new OldTaskPresenter(this);
         View view = inflater.inflate(R.layout.old_task_fragment, container, false);
         ButterKnife.bind(this, view);
+        emptyText.setText(R.string.empty_text_old_fragment);
         presenter.onStart();
         return view;
     }
@@ -44,4 +51,18 @@ public class OldTaskFragment extends Fragment implements OldTaskView {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
     }
+    @Override
+    public void showEmptyCase() {
+        emptyTextContainer.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        emptyText.setText(R.string.empty_text_old_fragment);
+    }
+
+    @Override
+    public void hideEmptyCase() {
+        emptyTextContainer.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+    }
+
+
 }

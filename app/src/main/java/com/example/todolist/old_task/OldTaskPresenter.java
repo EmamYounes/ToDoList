@@ -28,10 +28,19 @@ class OldTaskPresenter {
         toDoList = databaseHelper.getToDoList();
         dateFormat = new DateFormat();
         getView.setAdapterData(getListForDay(toDoList));
+        handleEmptyCase(getListForDay(toDoList));
     }
 
     private ArrayList<ToDoModel> getListForDay(ArrayList<ToDoModel> toDoModels) {
         return (ArrayList<ToDoModel>) Observable.fromIterable(toDoModels).filter(item ->
                 dateFormat.isOldDate(item.getToDoDate())).toList().blockingGet();
+    }
+
+    void handleEmptyCase(ArrayList<ToDoModel> toDoModels) {
+        if (toDoModels.isEmpty()) {
+            getView.showEmptyCase();
+        } else {
+            getView.hideEmptyCase();
+        }
     }
 }
