@@ -90,25 +90,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<ToDoModel> getToDoList() {
+        try {
 
-        ArrayList<ToDoModel> toDoModels = new ArrayList<>();
-        String selectQuery = "SELECT  * FROM " + SqlLightConstant.TABLE_NAME;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                ToDoModel model = new ToDoModel();
-                model.setId(cursor.getInt(cursor.getColumnIndex(SqlLightConstant.COLUMN_ID)));
-                model.setToDoDate(cursor.getString(cursor.getColumnIndex(SqlLightConstant.COLUMN_TODO_DATE)));
-                model.setCardMail(cursor.getString(cursor.getColumnIndex(SqlLightConstant.COLUMN_MAIL)));
-                model.setCardTitle(cursor.getString(cursor.getColumnIndex(SqlLightConstant.COLUMN_TITLE)));
-                model.setCardDescription(cursor.getString(cursor.getColumnIndex(SqlLightConstant.COLUMN_DESCRIPTION)));
-                toDoModels.add(model);
-            } while (cursor.moveToNext());
+            ArrayList<ToDoModel> toDoModels = new ArrayList<>();
+            String selectQuery = "SELECT  * FROM " + SqlLightConstant.TABLE_NAME;
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    ToDoModel model = new ToDoModel();
+                    model.setId(cursor.getInt(cursor.getColumnIndex(SqlLightConstant.COLUMN_ID)));
+                    model.setToDoDate(cursor.getString(cursor.getColumnIndex(SqlLightConstant.COLUMN_TODO_DATE)));
+                    model.setCardMail(cursor.getString(cursor.getColumnIndex(SqlLightConstant.COLUMN_MAIL)));
+                    model.setCardTitle(cursor.getString(cursor.getColumnIndex(SqlLightConstant.COLUMN_TITLE)));
+                    model.setCardDescription(cursor.getString(cursor.getColumnIndex(SqlLightConstant.COLUMN_DESCRIPTION)));
+                    toDoModels.add(model);
+                } while (cursor.moveToNext());
+            }
+            db.close();
+            return toDoModels;
+        } catch (Exception e) {
+            return null;
         }
-        db.close();
-        return toDoModels;
     }
+
 
     public int getToDoListCount() {
         String countQuery = "SELECT  * FROM " + SqlLightConstant.TABLE_NAME;
