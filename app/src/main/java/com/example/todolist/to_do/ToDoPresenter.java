@@ -21,7 +21,7 @@ public class ToDoPresenter {
     void onStart() {
         dateFormat = new DateFormat();
         //start from first day in current month
-        getView.setInitialDate(dateFormat.getCurrentYear(), dateFormat.getCurrentMonth(), 1);
+        getView.setInitialDate(dateFormat.getCurrentYear(), dateFormat.getCurrentMonth()-1, 1);
     }
 
     void handleAddButtonVisibilty(String date) {
