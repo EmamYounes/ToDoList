@@ -146,22 +146,26 @@ public class ToDoFragment extends Fragment implements ToDoView {
             @Override
             public void onDateSelected(int year, int month, int day, int dayOfWeek) {
                 Log.d(TAG, "onDateSelected: " + day);
-                addNoteBtn.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.VISIBLE);
-                emptyTextContainer.setVisibility(View.GONE);
-                emptyText.setText(R.string.empty_text);
-                dateFormat = new DateFormat(year, month+1, day);
-                adapter.updateList(getListForDay(databaseHelper.getToDoList()));
-                presenter.handleAddButtonVisibilty(dateFormat.getDate());
-                presenter.handleEmptyCase(getListForDay(databaseHelper.getToDoList()));
+                addNoteToList(year, month, day);
             }
 
             @Override
             public void onDisabledDateSelected(int year, int month, int day, int dayOfWeek, boolean isDisabled) {
                 Log.d(TAG, "onDisabledDateSelected: " + day + isDisabled);
-
+                addNoteToList(year, month, day);
             }
         });
+    }
+
+    private void addNoteToList(int year, int month, int day) {
+        addNoteBtn.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.VISIBLE);
+        emptyTextContainer.setVisibility(View.GONE);
+        emptyText.setText(R.string.empty_text);
+        dateFormat = new DateFormat(year, month+1, day);
+        adapter.updateList(getListForDay(databaseHelper.getToDoList()));
+        presenter.handleAddButtonVisibilty(dateFormat.getDate());
+        presenter.handleEmptyCase(getListForDay(databaseHelper.getToDoList()));
     }
 
     @Override
