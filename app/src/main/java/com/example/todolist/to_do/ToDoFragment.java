@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.todolist.DateFormat;
 import com.example.todolist.MySingleton;
 import com.example.todolist.R;
+import com.example.todolist.Utils;
 import com.example.todolist.local_data.DatabaseHelper;
 import com.example.todolist.to_do.adapter.ToDoListAdapter;
 import com.example.todolist.to_do.model.ToDoModel;
@@ -162,7 +163,7 @@ public class ToDoFragment extends Fragment implements ToDoView {
         recyclerView.setVisibility(View.VISIBLE);
         emptyTextContainer.setVisibility(View.GONE);
         emptyText.setText(R.string.empty_text);
-        dateFormat = new DateFormat(year, month+1, day);
+        dateFormat = new DateFormat(year, month + 1, day);
         adapter.updateList(getListForDay(databaseHelper.getToDoList()));
         presenter.handleAddButtonVisibilty(dateFormat.getDate());
         presenter.handleEmptyCase(getListForDay(databaseHelper.getToDoList()));
@@ -247,6 +248,9 @@ public class ToDoFragment extends Fragment implements ToDoView {
     public void addNoteToList(String noteTitle, String noteDescription) {
         ToDoModel toDoModel = new ToDoModel();
         toDoModel.setCardTitle(noteTitle);
+/*
+        toDoModel.setCardMail(Utils.getInstance().getUserMail());
+*/
         toDoModel.setCardDescription(noteDescription);
         toDoModel.setToDoDate(dateFormat.getDate());
         databaseHelper.insertToDoColumn(toDoModel);

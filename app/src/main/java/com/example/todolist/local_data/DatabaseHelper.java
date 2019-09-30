@@ -110,10 +110,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.close();
             return toDoModels;
         } catch (Exception e) {
-            return null;
+            return new ArrayList<>();
         }
     }
-
 
     public int getToDoListCount() {
         String countQuery = "SELECT  * FROM " + SqlLightConstant.TABLE_NAME;

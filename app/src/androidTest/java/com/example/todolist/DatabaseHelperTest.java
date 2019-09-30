@@ -65,9 +65,8 @@ public class DatabaseHelperTest {
 
         databaseHelper.deleteTable();
 
-        assertEquals(null, databaseHelper.getToDoList());
+        assertEquals(0, databaseHelper.getToDoList().size());
     }
-
 
 
 }

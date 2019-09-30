@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.todolist.MainActivity;
 import com.example.todolist.MySingleton;
 import com.example.todolist.R;
+import com.example.todolist.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -92,6 +93,10 @@ public class LoginActivity extends AppCompatActivity {
     private void onLoggedIn(GoogleSignInAccount googleSignInAccount) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(MainActivity.GOOGLE_ACCOUNT, googleSignInAccount);
+
+        Utils.getInstance().saveUserName(googleSignInAccount.getDisplayName());
+        Utils.getInstance().saveUserMail(googleSignInAccount.getEmail());
+        Utils.getInstance().saveUserImageUrl(googleSignInAccount.getPhotoUrl());
 
         startActivity(intent);
         finish();
