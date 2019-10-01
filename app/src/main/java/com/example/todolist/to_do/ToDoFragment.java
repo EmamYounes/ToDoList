@@ -248,9 +248,7 @@ public class ToDoFragment extends Fragment implements ToDoView {
     public void addNoteToList(String noteTitle, String noteDescription) {
         ToDoModel toDoModel = new ToDoModel();
         toDoModel.setCardTitle(noteTitle);
-/*
         toDoModel.setCardMail(Utils.getInstance().getUserMail());
-*/
         toDoModel.setCardDescription(noteDescription);
         toDoModel.setToDoDate(dateFormat.getDate());
         databaseHelper.insertToDoColumn(toDoModel);

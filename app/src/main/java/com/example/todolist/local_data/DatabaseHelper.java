@@ -1,21 +1,25 @@
 package com.example.todolist.local_data;
 
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.todolist.Utils;
 import com.example.todolist.to_do.model.ToDoModel;
 
 import java.util.ArrayList;
+
+import io.reactivex.Observable;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "to_do_db";
+    private static final String DATABASE_NAME = "TO_DO_DB";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,10 +38,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void insertToDoColumn(ToDoModel toDoModel) {
-
-/*
-        if (isMailAddBefore(toDoModel)) return;
-*/
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -89,7 +89,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return model;
     }
 
-    public ArrayList<ToDoModel> getToDoList() {
+    public ArrayList<ToDoModel> getToDoListFromTable() {
         try {
 
             ArrayList<ToDoModel> toDoModels = new ArrayList<>();
@@ -112,6 +112,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             return new ArrayList<>();
         }
+    }
+
+    @SuppressLint("CheckResult")
+    public ArrayList<ToDoModel> getToDoList() {
+
+        ArrayList<ToDoModel> list = getToDoListFromTable();
+        return (ArrayList<ToDoModel>) Observable.fromIterable(list).filter(item ->
+                item.getCardMail().equalsIgnoreCase(Utils.getInstance().getUserMail())).toList().blockingGet();
     }
 
     public int getToDoListCount() {
